@@ -1,8 +1,17 @@
+
+
+
+
+
+
+
+
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useJobStore } from "@/lib/store";
+
 
 export default function HomePage() {
   const [showDialog, setShowDialog] = useState(false);
@@ -87,4 +96,3 @@ export default function HomePage() {
     </div>
   );
 }
-  

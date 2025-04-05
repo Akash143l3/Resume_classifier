@@ -10,10 +10,10 @@ export default function Navbar() {
       </Link>
       <div className="flex items-center space-x-4">
         <Link
-          href="/category"
+          href="/saved"
           className="text-white border  px-4 py-1 rounded hover:bg-blue-400"
         >
-          Category
+          Saved
         </Link>
       </div>
     </div>

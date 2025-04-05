@@ -1,7 +1,41 @@
 "use client";
 
-import { jobListInitial } from "@/app/job_listings/page";
+
 import { useParams } from "next/navigation";
+
+
+export const jobListInitial = [
+  {
+    id: "1",
+    name: "Akash",
+    email: "Akashbr41304@gmail.com",
+    skills: ["Leadership", "DBMS", "Project Management"],
+    experience: "6 years",
+    description:
+      "Handles team and database. Expert in DBMS and team coordination. Leads multiple successful tech projects.",
+    badge: "Fit",
+  },
+  {
+    id: "2",
+    name: "Riya",
+    email: "riya.dev@example.com",
+    skills: ["React", "TailwindCSS", "UI/UX Design"],
+    experience: "3 years",
+    description:
+      "Frontend React developer skilled in creating responsive and accessible UIs. Strong sense of visual design.",
+    badge: "Unfit",
+  },
+  {
+    id: "3",
+    name: "Rahul",
+    email: "rahul.db@example.com",
+    skills: ["MySQL", "MongoDB", "Data Backup", "Performance Tuning"],
+    experience: "5 years",
+    description:
+      "Database admin with extensive experience in designing and maintaining large-scale databases.",
+    badge: "Maybe Fit",
+  },
+];
 
 export default function ProfilePage() {
   const { id } = useParams();
