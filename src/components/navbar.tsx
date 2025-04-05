@@ -17,7 +17,7 @@ export default function Navbar() {
       <div>
         <Link
           href={`/category`}
-          className="text-secondary-foreground mr-4 mt-4 "
+          className="text-secondary-foreground mr-4 mt-4 border "
         >
           Category
         </Link>
