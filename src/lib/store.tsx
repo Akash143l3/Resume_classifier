@@ -7,7 +7,7 @@ type JobStore = {
 };
 
 export const useJobStore = create<JobStore>((set:any) => ({
-  role: "Manager",
-  description: "DBMS",
+  role: "Developer",
+  description: "Python",
   setJobDetails: (role:any, description:any) => set({ role, description }),
 }));
