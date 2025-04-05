@@ -76,7 +76,7 @@ export default function Page() {
   return (
     <div className="w-full min-h-screen bg-white p-6 space-y-10">
       {selectedIds.length > 0 && (
-        <div className="mb-6">
+        <div className="mb-6 absolute top-20 right-10 w-full flex justify-end items-end">
           <button
             onClick={handleDeleteSelected}
             className="px-5 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 text-sm"

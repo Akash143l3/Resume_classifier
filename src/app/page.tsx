@@ -6,15 +6,25 @@ import { useJobStore } from "@/lib/store";
 
 export default function HomePage() {
   const [showDialog, setShowDialog] = useState(false);
-  const [role, setRole] = useState("Manager");
-  const [description, setDescription] = useState("DBMS");
+  const [role, setRole] = useState("");
+  const [description, setDescription] = useState("");
   const setJobDetails = useJobStore((state) => state.setJobDetails);
   const router = useRouter();
 
   const handleSubmit = () => {
-    setJobDetails(role, description); // ✅ Sets global state
-    setShowDialog(false);
-    router.push("/job_listings"); // ✅ Navigate to second page
+    if (role.trim() && description.trim()) {
+      setJobDetails(role, description);
+      setShowDialog(false);
+      setRole("");
+      setDescription("");
+      router.push("/job_listings");
+    }
+  };
+
+  const handleOpenDialog = () => {
+    setRole("");
+    setDescription("");
+    setShowDialog(true);
   };
 
   return (
@@ -29,7 +39,7 @@ export default function HomePage() {
           <strong>Not Fit</strong>.
         </p>
         <Button
-          onClick={() => setShowDialog(true)}
+          onClick={handleOpenDialog}
           className="text-lg px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white"
         >
           Enter Prompt
@@ -54,8 +64,12 @@ export default function HomePage() {
               />
               <div className="flex justify-end gap-2">
                 <button
-                  onClick={() => setShowDialog(false)}
-                  className="px-4 py-2 border rounded-md"
+                  onClick={() => {
+                    setShowDialog(false);
+                    setRole("");
+                    setDescription("");
+                  }}
+                  className="px-4 py-2 border border-black text-black bg-white rounded-md hover:bg-gray-100"
                 >
                   Cancel
                 </button>
@@ -73,3 +87,4 @@ export default function HomePage() {
     </div>
   );
 }
+  
