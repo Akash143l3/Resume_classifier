@@ -11,7 +11,7 @@ export default function Navbar() {
       <div className="flex items-center space-x-4">
         <Link
           href="/category"
-          className="text-white border  px-4 py-1 rounded hover:bg-blue-100"
+          className="text-white border  px-4 py-1 rounded hover:bg-blue-400"
         >
           Category
         </Link>
