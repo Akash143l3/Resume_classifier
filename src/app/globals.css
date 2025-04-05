@@ -5,7 +5,6 @@
 
 /* Your current root variables */
 :root {
-
   /* shadcn variables */
   --radius: 0.5rem;
   --card: oklch(1 0 0);
@@ -84,7 +83,6 @@
 /* Dark mode using media query */
 @media (prefers-color-scheme: dark) {
   :root {
-
     /* shadcn dark mode variables */
     --card: oklch(0.21 0.006 285.885);
     --card-foreground: oklch(0.985 0 0);
