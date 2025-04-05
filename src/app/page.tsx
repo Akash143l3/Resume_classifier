@@ -3,17 +3,18 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useJobStore } from "@/lib/store";
-  
-export default function Page() {
+
+export default function HomePage() {
   const [showDialog, setShowDialog] = useState(false);
   const [role, setRole] = useState("Manager");
   const [description, setDescription] = useState("DBMS");
-  const setJobDetails = useJobStore((state:any) => state.setJobDetails);
+  const setJobDetails = useJobStore((state) => state.setJobDetails);
   const router = useRouter();
 
   const handleSubmit = () => {
-    setJobDetails(role, description);
-    router.push("/job_listings");
+    setJobDetails(role, description); // ✅ Sets global state
+    setShowDialog(false);
+    router.push("/job_listings"); // ✅ Navigate to second page
   };
 
   return (

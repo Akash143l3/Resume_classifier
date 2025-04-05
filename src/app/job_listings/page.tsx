@@ -1,8 +1,8 @@
 "use client";
-
-import { Badge } from "@/components/ui/badge";
 import React, { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { useJobStore } from "@/lib/store"; // ✅ Use global store
 
 export const jobListInitial = [
   {
@@ -40,15 +40,17 @@ export const jobListInitial = [
   },
 ];
 
-export default function Page() {
+export default function JobListingsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [badgeFilter, setBadgeFilter] = useState("All");
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [jobList] = useState(jobListInitial);
-
   const [showEditDialog, setShowEditDialog] = useState(false);
-  const [jobRole, setJobRole] = useState("Manager");
-  const [jobDescription, setJobDescription] = useState("DBMS");
+
+  // ✅ Global job details
+  const jobRole = useJobStore((state) => state.role);
+  const jobDescription = useJobStore((state) => state.description);
+  const setJobDetails = useJobStore((state) => state.setJobDetails);
 
   const handleCheckboxChange = (email: string) => {
     setSelectedJobs((prev) =>
@@ -118,7 +120,7 @@ export default function Page() {
       </div>
 
       {/* Job Cards Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2   md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredJobs.map((job) => (
           <div
             key={job.id}
@@ -135,7 +137,7 @@ export default function Page() {
                 Name: {job.name}
               </h2>
               <Badge
-                className={`text-md rounded-xl px-2 ${
+                className={`text-md rounded-xl px-4 ${
                   job.badge === "Fit"
                     ? "bg-green-100 text-green-800"
                     : job.badge === "Unfit"
@@ -158,56 +160,9 @@ export default function Page() {
             </div>
           </div>
         ))}
-
-        {filteredJobs.length === 0 && (
-          <div className="text-gray-500 col-span-full text-center italic">
-            No matching jobs found.
-          </div>
-        )}
       </div>
 
-      {/* Category Page Section */}
-      {selectedJobDetails.length > 0 && (
-        <div className="mt-12 border-t pt-8">
-          <h2 className="text-xl font-bold text-blue-800 mb-4">
-            Category Page
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {selectedJobDetails.map((job) => (
-              <div
-                key={job.id}
-                className="bg-yellow-50 p-5 rounded-2xl shadow-md border border-yellow-100 space-y-2"
-              >
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-yellow-800">
-                    {job.name}
-                  </h2>
-                  <Badge
-                    className={`text-md rounded-xl px-2 ${
-                      job.badge === "Fit"
-                        ? "bg-green-100 text-green-800"
-                        : job.badge === "Unfit"
-                        ? "bg-red-100 text-red-800"
-                        : "bg-yellow-100 text-yellow-800"
-                    }`}
-                  >
-                    {job.badge}
-                  </Badge>
-                </div>
-                <p className="text-sm text-yellow-700">Email: {job.email}</p>
-                <p className="text-sm text-yellow-700">{job.description}</p>
-                <Link
-                  href={`/profile/${job.id}`}
-                  className="inline-block mt-2 text-yellow-700 hover:underline text-sm font-medium"
-                >
-                  View Profile
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
+  
       {/* Edit Dialog */}
       {showEditDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -217,13 +172,13 @@ export default function Page() {
               className="w-full border px-3 py-2 rounded-lg text-black"
               placeholder="Job Role"
               value={jobRole}
-              onChange={(e) => setJobRole(e.target.value)}
+              onChange={(e) => setJobDetails(e.target.value, jobDescription)}
             />
             <textarea
               className="w-full border px-3 py-2 rounded-lg text-black"
               placeholder="Job Description"
               value={jobDescription}
-              onChange={(e) => setJobDescription(e.target.value)}
+              onChange={(e) => setJobDetails(jobRole, e.target.value)}
             />
             <div className="flex justify-end gap-2">
               <button
@@ -234,11 +189,7 @@ export default function Page() {
               </button>
               <button
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                onClick={() => {
-                  console.log("✅ Job Role:", jobRole);
-                  console.log("✅ Job Description:", jobDescription);
-                  setShowEditDialog(false);
-                }}
+                onClick={() => setShowEditDialog(false)}
               >
                 Save
               </button>
