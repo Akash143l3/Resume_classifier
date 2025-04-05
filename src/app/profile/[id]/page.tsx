@@ -26,7 +26,6 @@ export default function ProfilePage() {
           </div>
           <div className="text-center sm:text-left space-y-2">
             <h1 className="text-3xl font-bold text-blue-800">{user.name}</h1>
-            <p className="text-blue-600 text-md">{user.role}</p>
             <span
               className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
                 user.badge === "Fit"

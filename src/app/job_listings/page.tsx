@@ -2,14 +2,13 @@
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { useJobStore } from "@/lib/store"; // ✅ Use global store
+import { useJobStore } from "@/lib/store";
 
 export const jobListInitial = [
   {
     id: "1",
     name: "Akash",
     email: "Akashbr41304@gmail.com",
-    role: "Team Lead",
     skills: ["Leadership", "DBMS", "Project Management"],
     experience: "6 years",
     description:
@@ -20,7 +19,6 @@ export const jobListInitial = [
     id: "2",
     name: "Riya",
     email: "riya.dev@example.com",
-    role: "Frontend Developer",
     skills: ["React", "TailwindCSS", "UI/UX Design"],
     experience: "3 years",
     description:
@@ -31,7 +29,6 @@ export const jobListInitial = [
     id: "3",
     name: "Rahul",
     email: "rahul.db@example.com",
-    role: "Database Administrator",
     skills: ["MySQL", "MongoDB", "Data Backup", "Performance Tuning"],
     experience: "5 years",
     description:
@@ -47,7 +44,6 @@ export default function JobListingsPage() {
   const [jobList] = useState(jobListInitial);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
-  // ✅ Global job details
   const jobRole = useJobStore((state) => state.role);
   const jobDescription = useJobStore((state) => state.description);
   const setJobDetails = useJobStore((state) => state.setJobDetails);
@@ -56,6 +52,17 @@ export default function JobListingsPage() {
     setSelectedJobs((prev) =>
       prev.includes(email) ? prev.filter((e) => e !== email) : [...prev, email]
     );
+  };
+
+  const handleSaveSelected = () => {
+    const selected = jobList.filter((job) => selectedJobs.includes(job.email));
+    console.log("✅ Selected Candidates:");
+    selected.forEach((job) => {
+      console.log(`Name: ${job.name}, Role: ${jobRole}`);
+    });
+
+    // Clear all selected checkboxes after saving
+    setSelectedJobs([]);
   };
 
   const filteredJobs = jobList.filter((job) => {
@@ -68,10 +75,6 @@ export default function JobListingsPage() {
       job.badge.toLowerCase() === badgeFilter.toLowerCase();
     return matchesSearch && matchesBadge;
   });
-
-  const selectedJobDetails = jobList.filter((job) =>
-    selectedJobs.includes(job.email)
-  );
 
   return (
     <div className="w-full min-h-screen bg-white p-6">
@@ -86,7 +89,8 @@ export default function JobListingsPage() {
               <span className="font-medium">Job Role :</span> {jobRole}
             </p>
             <p className="text-base text-blue-800">
-              <span className="font-medium">Job Description :</span> {jobDescription}
+              <span className="font-medium">Job Description :</span>{" "}
+              {jobDescription}
             </p>
           </div>
           <button
@@ -99,13 +103,13 @@ export default function JobListingsPage() {
       </div>
 
       {/* Search and Filter */}
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 max-w-3xl mb-8">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 max-w-full mb-8">
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search by name or email..."
-          className="w-full md:w-2/3 px-4 py-3 border text-black border-blue-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+          className="w-full md:w-1/3 px-4 py-3 border text-black border-blue-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         />
         <select
           value={badgeFilter}
@@ -117,10 +121,24 @@ export default function JobListingsPage() {
           <option value="Unfit">Unfit</option>
           <option value="Maybe Fit">Maybe Fit</option>
         </select>
+
+          {/* Save Button (Only shown if something is selected) */}
+      {selectedJobs.length > 0 && (
+        <div className="max-w-full">
+          <button
+            onClick={handleSaveSelected}
+            className="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 text-sm"
+          >
+            Save Selected ({selectedJobs.length})
+          </button>
+        </div>
+      )}
       </div>
 
-      {/* Job Cards Section */}
-      <div className="grid grid-cols-2   md:grid-cols-3 lg:grid-cols-4 gap-6">
+    
+
+      {/* Job Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredJobs.map((job) => (
           <div
             key={job.id}
@@ -162,7 +180,6 @@ export default function JobListingsPage() {
         ))}
       </div>
 
-  
       {/* Edit Dialog */}
       {showEditDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
