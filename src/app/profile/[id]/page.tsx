@@ -26,17 +26,8 @@ export default function ProfilePage() {
           </div>
           <div className="text-center sm:text-left space-y-2">
             <h1 className="text-3xl font-bold text-blue-800">{user.name}</h1>
-            <span
-              className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
-                user.badge === "Fit"
-                  ? "bg-green-100 text-green-800"
-                  : user.badge === "Unfit"
-                  ? "bg-red-100 text-red-800"
-                  : "bg-yellow-100 text-yellow-800"
-              }`}
-            >
-              {user.badge}
-            </span>
+           
+             
           </div>
         </div>
 
